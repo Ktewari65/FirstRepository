@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="SaveToLocalStorage(event)">
+    <label id="Text">Name</label>
+    <input type="text"  name="username"/> 
+    <label> ID</label>
+    <input type ="email"  name="emailid"> 
+    <button>Submit</button>
+</form>
+<ul id="listofitems"></ul>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+<script>
+    function SaveToLocalStorage(event){
+        event.preventDefault();
+        const name =event.target.username.value;
+        const id = event.target.emailid.value;
+        //localStorage.setItem('name', name);
+        //localStorage.setItem('email', id);
+
+        const obj ={
+            name,
+            id
+        }
+       // localStorage.setItem(obj.name, JSON.stringify(obj))
+        axios
+        .post("https://crudcrud.com/api/9065a0aee9bc41e9875faf5d5525611b/appointmentgate",obj)
+        .then((response)  =>{
+            console.log(response)
+        })
+        .catch((error) =>{
+            console.log(error)
+        })
+
+        showUserOnScreen(obj)
+
+        window.addEventListener("DOMContentLoaded", () =>{
+            axios.get("https://crudcrud.com/api/9065a0aee9bc41e9875faf5d5525611b/appointment")
+            .then((response)  =>{
+            console.log(response)
+            for(var i=0;i<response.data.length;i++){
+               showUserOnScreen(response.data[i]) 
+            }
+        })
+        .catch((error) =>{
+            console.log(error)
+        })
+
+        })
+
+        function showUserOnScreen(){
+           const parent = document.getElementById("listofitems")
+           const child= document.createElement('li')
+           child.textContent= obj.name + " "+ obj.id
+           parent.appendChild(child)
+           const deletebtn = document.createElement('input')
+           deletebtn.type="button"
+           deletebtn.value="delete"
+
+           deletebtn.onclick= () =>{
+            localStorage.removeItem(obj.name)
+                    parent.removeChild(child)
+
+           }
+
+           const editbtn = document.createElement('input')
+                editbtn.type = "button"
+                editbtn.value = "Edit"
+                editbtn.onclick = () => {
+                    localStorage.removeItem(obj.name)
+                    parent.removeChild(child)
+                    document.getElementById('username').value = obj.name
+                   document.getElementById('Description').value = obj.des
+                    document.getElementById('cars').value = obj.car
+                }
+                child.appendChild(editbtn)
+                child.appendChild(deletebtn)
+                parent.appendChild(child)
+        }
+    }
+
+   
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
