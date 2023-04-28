@@ -4,13 +4,10 @@
 //I want you to console log all the posts created and lastActivityTime of the user. [If stuck for long watch the hint 2]
 //Once both the above promises are resolved , I want you to delete the last post by calling the deletion promise. Once successfully deleted, I want you to log the new set of Posts of the user.
 
-function updateLastUserActivityTime(){
-    return Promise((resolve,reject)  =>{
-      
-    } )
-}
+const number=[1,2,3]
 
-function createPost(){
-    
-
-}
+const double  =  number.map((num) =>{
+    return num*2;
+})
+console.log(number)
+console.log(double)
